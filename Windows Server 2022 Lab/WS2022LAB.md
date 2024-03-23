@@ -64,6 +64,11 @@
       - [Deploy SIG-PC1 for IT](#deploy-sig-pc1-for-it)
       - [Deploy SIG-PC2 for HR](#deploy-sig-pc2-for-hr)
       - [Deploy Windows Server 2022](#deploy-windows-server-2022)
+  - [Setup Group Policies](#setup-group-policies)
+    - [Setup share files and folders on SIG-SVR4 to setup network drives](#setup-share-files-and-folders-on-sig-svr4-to-setup-network-drives)
+    - [Setup Network drives using single GPO](#setup-network-drives-using-single-gpo)
+    - [IT users can only see HelpDesk folder as E: Drive](#it-users-can-only-see-helpdesk-folder-as-e-drive)
+    - [HR users can only see HR folder as G: Drive](#hr-users-can-only-see-hr-folder-as-g-drive)
 
 ## Introduction
 
@@ -101,15 +106,14 @@
 - [x] Implement SIG-SVR1 to serve DHCP and SIG-SVR2 as failover DHCP
 - [x] Enable DHCP Relay on PFSENSE interfaces
 - [x] Create OUs, Users and Groups
-- [ ] Implement SIG-SVR3 to serve MDT and WDS for Windows Server 2022 and Windows 10 Deployments
-- [ ] Deploy SIG-SVR4, SIG-PC1 and SIG-PC2 through WDS/MDT
-- [ ] Setup below Group Policies
-	- [ ] Setup Network drives using single GPO
-		- [ ] Setup share files and folders on SIG-SVR4 to setup network drives
-		- [ ] HelpDesk users can only see HelpDesk folder as I: Drive
-		- [ ] HR users can only see HR folder as H: Drive
+- [x] Implement SIG-SVR3 to serve MDT and WDS for Windows Server 2022 and Windows 10 Deployments
+- [x] Deploy SIG-SVR4, SIG-PC1 and SIG-PC2 through WDS/MDT
+- [ ] Setup Group Policies
+	- [x] Setup share files and folders on SIG-SVR4 to setup network drives
+	- [x] HelpDesk users can only see HelpDesk folder as E: Drive
+	- [x] HR users can only see HR folder as G: Drive
 	- [ ] Hide C drive on only SIG HR Users either use existing GPO or new GPO
-	- [ ] Setup HelpDesk group as Local Admin on SIG-WORKSTATIONS
+	- [ ] Setup HelpDesk group as Local Admin on SIG-PCs
 	- [ ] Group Policies Central Store
 
 ## Setup Workstation VM to manage
@@ -741,4 +745,30 @@ Computer account for SIG-PC1 is in IT-Computer OU.
 ![SIG-PC2 OU](./img/SIG-PC2HROU.jpg)
 
 #### Deploy Windows Server 2022
+
+![SIG-SVR4](./img/SIG-SVR4.jpg)
+
+![SIG-SVR4](./img/SIG-SVR4OU.jpg)
+
+## Setup Group Policies
+
+### Setup share files and folders on SIG-SVR4 to setup network drives
+
+![Share Folder](./img/SIG-SVR4ShareFolder.jpg)
+
+### Setup Network drives using single GPO
+
+![Map Drive GPO](./img/MapDrive-GPO.jpg)
+
+### IT users can only see HelpDesk folder as E: Drive
+
+On SIG-PC1
+
+![HelpDesk Map Drive](./img/MapDrive-HelpDesk.jpg)
+
+![HelpDesk Map Drive](./img/MapDrive-HelpDesk-SIG-PC2.jpg)
+
+### HR users can only see HR folder as G: Drive
+
+![HR Map Drive](./img/MapDrive-HR.jpg)
 
