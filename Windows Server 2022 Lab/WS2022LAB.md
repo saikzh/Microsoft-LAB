@@ -69,6 +69,9 @@
     - [Setup Network drives using single GPO](#setup-network-drives-using-single-gpo)
     - [IT users can only see HelpDesk folder as E: Drive](#it-users-can-only-see-helpdesk-folder-as-e-drive)
     - [HR users can only see HR folder as G: Drive](#hr-users-can-only-see-hr-folder-as-g-drive)
+    - [Hide C drive on only SIG HR Users](#hide-c-drive-on-only-sig-hr-users)
+    - [Setup HelpDesk group as Local Admin on SIG-PCs](#setup-helpdesk-group-as-local-admin-on-sig-pcs)
+    - [Deploy Google Chrome Browser through Group Policy on HO-Staff Computers](#deploy-google-chrome-browser-through-group-policy-on-ho-staff-computers)
 
 ## Introduction
 
@@ -112,8 +115,10 @@
 	- [x] Setup share files and folders on SIG-SVR4 to setup network drives
 	- [x] HelpDesk users can only see HelpDesk folder as E: Drive
 	- [x] HR users can only see HR folder as G: Drive
-	- [ ] Hide C drive on only SIG HR Users either use existing GPO or new GPO
-	- [ ] Setup HelpDesk group as Local Admin on SIG-PCs
+	- [x] Hide C drive on only SIG HR Users
+	- [x] Setup HelpDesk group as Local Admin on SIG-PCs
+	- [ ] Deploy Google Chrome Browser through Group Policy on HO-Staff Computers
+	- [ ] Get Group Policy for Google Chrome
 	- [ ] Group Policies Central Store
 
 ## Setup Workstation VM to manage
@@ -232,7 +237,7 @@ Add IP Addresses of DHCP Servers and MDT/WDS Server
 
 Below OUs in red square are created.
 
-**HO-Staff** OU is for the users and computers, and **SIG-SVR** OU is for servers.
+**HO-Staff** OU is for the users and computers, **HO-Computer** OU, HR-COmputer and IT-Computer OUs are for comptuers, and **SIG-SVR** OU is for servers.
 
 ![OUs](./img/OUs.jpg)
 
@@ -496,7 +501,7 @@ KeyboardLocale= 0409:00000409
 
 SkipDomainMembership=Yes
 JoinDomain=SIG.local
-MachineObjectOU=OU=IT-Computer,OU=IT,OU=HO-Staff,DC=SIG,DC=local
+MachineObjectOU=OU=IT-Computer,OU=IT,OU=HO-Computer,DC=SIG,DC=local
 DomainAdmin=Josh
 DomainAdminDomain=SIG.local
 DomainAdminPassword=P@ssw0rd123!@#
@@ -563,7 +568,7 @@ KeyboardLocale= 0409:00000409
 
 SkipDomainMembership=Yes
 JoinDomain=SIG.local
-MachineObjectOU=OU=HR-Computer,OU=HR,OU=HO-Staff,DC=SIG,DC=local
+MachineObjectOU=OU=HR-Computer,OU=HR,OU=HO-Computer,DC=SIG,DC=local
 DomainAdmin=Josh
 DomainAdminDomain=SIG.local
 DomainAdminPassword=P@ssw0rd123!@#
@@ -758,9 +763,17 @@ Computer account for SIG-PC1 is in IT-Computer OU.
 
 ### Setup Network drives using single GPO
 
+HO-Staff GPO is created and mapped it to HO-Staff OU
+
+![HO-Staff GPO](./img/GPO-HO-Staff-MapDrives.jpg)
+
 ![Map Drive GPO](./img/MapDrive-GPO.jpg)
 
 ### IT users can only see HelpDesk folder as E: Drive
+
+![Help Desk Map Drive](./img/GPO-MapDrive-IT-Drive.jpg)
+
+![Help Desk Map Drive](./img/GPO-MapDrive-IT-Drive1.jpg)
 
 On SIG-PC1
 
@@ -770,5 +783,44 @@ On SIG-PC1
 
 ### HR users can only see HR folder as G: Drive
 
+![HR Map Drive](./img/GPO-MapDrive-HR-Drive.jpg)
+
+![HR Map Drive](./img/GPO-MapDrive-HR-Drive1.jpg)
+
 ![HR Map Drive](./img/MapDrive-HR.jpg)
 
+### Hide C drive on only SIG HR Users
+
+Created HR GPO for HR OU
+
+![HR GPO](./img/GPO-HROU.jpg)
+
+![HR GPO](./img/GPO-HROU-HideCDrive.jpg)
+
+![Hide C Drive](./img/GP-HideCDrive.jpg)
+
+### Setup HelpDesk group as Local Admin on SIG-PCs
+
+Add Helpdesk group as a member of Administrators in Restricted Groups under HO-Staff GPO.
+
+![Local Admin](./img/GPO-HO-HelpDesk-LocalAdmin.jpg)
+
+### Deploy Google Chrome Browser through Group Policy on HO-Staff Computers
+
+Download [Google Chrome Bundle](https://chromeenterprise.google/download/?modal-id=download-chrome)
+
+Create share folder on SIG-SVR4 and put Google Chrome MSI Installer in it
+
+![Google Chrome MSI Installer](./img/GPO-GoogleChrome.jpg)
+
+Put Google Chrome MSI Installer into GPO of HO-Staff &rarr; Computer Configuration &rarr; Policies &rarr; Software Settings &rarr; Software Installation
+
+![Google Chrome MSI Installer](./img/GPO-GoogleChrome1.jpg)
+
+![Google Chrome MSI Installer](./img/GPO-GoogleChrome2.jpg)
+
+Once it is done, type gpupdate /force on client
+
+![Google Chrome MSI Installer](./img/GPO-GoogleChrome3.jpg)
+
+Even after 
