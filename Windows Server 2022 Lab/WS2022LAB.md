@@ -223,9 +223,25 @@ SIG-SVR2 is added in Server Manager of SIG-SVR1 to manage remotely from SIG-SVR1
 
 ![SIG DCs](./img/SIG-DC-REP.jpg)
 
-Open PowerShell on both servers and run repadmin /syncall command repadmin /replsummary.
+Open PowerShell on both servers and run repadmin /syncall, repadmin /replsummary and repadmin /showrepl.
 
 ![SIG DCs Repadmin](./img/SIG-DC-REP1.jpg)
 
+![SIG DCs Repadmin](./img/SIG-DC-REP2.jpg)
+
 ## Implement SIG-SVR1 And SIG-SVR2 to serve DNS
+
+Check DNS by using nslookup.
+
+![SIG DNS](./img/DNS-NSLOOKUP.jpg)
+
+Name can be resolved but IP cannot be resolved.
+
+That is because DNS Reverse Lookup Zone is not created yet.
+
+![SIG DNS](./img/DNS-ZONES.jpg)
+
+In my lab, there are two DNS entries in DNS Manager. It is because DNS server role is installed after ADDS Server is installed.
+
+For more information, see [here](https://learn.microsoft.com/en-us/answers/questions/222309/double-dns-server-entry-showing-in-dns-manager-in).
 
